@@ -1,17 +1,18 @@
 # app.py
 from flask import Flask, render_template
 from flask import request
-import time
 import subprocess
-from datetime import datetime
-
+import os
 
 #Flask 객체 인스턴스 생성
 app = Flask(__name__)
 
 @app.route('/') # 접속하는 url
 def index():
-    return render_template('index.html')
+    result = """
+    /signin\n
+    """
+    return result
 
 @app.route('/signin')
 def signin():
@@ -43,6 +44,5 @@ def signin():
             return "Invalid parameter", 400
 
 if __name__=="__main__":
-    app.run(debug=True)
-    # host 등을 직접 지정하고 싶다면
-    # app.run(host="127.0.0.1", port="5000", debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
