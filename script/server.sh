@@ -19,4 +19,4 @@ python3 -m venv server/venv
 source server/venv/bin/activate
 pip install -r server/requirements.txt
 # flask start
-gunicorn app:app -b 0.0.0.0:5000 -w 10 --chdir server/
+gunicorn app:app -b 0.0.0.0:5000 -w 10 --chdir flask/

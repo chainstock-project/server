@@ -19,11 +19,11 @@ mkdir $GOPATH $GOPATH/bin $GOPATH/src $GOPATH/pkg
 
 # blockchain app install
 make
-$APP_DAEMON init second-node --home=$APP_HOME
-wget -qO- $FIRST_NODE_REST_API:26657/genesis | jq -r .result.genesis > $APP_HOME/config/genesis.json
-NODE_ID=$(wget -qO- $FIRST_NODE_REST_API:26657/status | jq -r .result.node_info.id)
-sed "s#persistent_peers = \"\"#persistent_peers = \"$NODE_ID@$FIRST_NODE_REST_API:26656\"#" -i $APP_HOME/config/config.toml
-$APP_DAEMON start
+blockchaind init second-node --home=~/.blockchain
+wget -qO- 127.0.0.1:26657/genesis | jq -r .result.genesis > ~/.blockchain/config/genesis.json
+NODE_ID=$(wget -qO- 127.0.0.1:26657/status | jq -r .result.node_info.id)
+sed "s#persistent_peers = \"\"#persistent_peers = \"$NODE_ID@127.0.0.1:26656\"#" -i ~/.blockchain/config/config.toml
+blockchaind start
 
 # last height
 PHEIGHT=$(wget -qO- 127.0.0.1:26657/dump_consensus_state | jq -r .result.peers[0].peer_state.round_state.height)
