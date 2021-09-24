@@ -1,2 +1,2 @@
 # server
-server app feature/readme
+flask server
