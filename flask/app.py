@@ -8,7 +8,7 @@ from update_stock_data import update_stock_data
 
 #schduler 실행
 sched = BackgroundScheduler(daemon=True, timezone="Asia/Seoul")
-sched.add_job(update_stock_data,'cron', hour=18,minute=5, day_of_week="mon-fri")
+sched.add_job(update_stock_data,'cron', hour=18)
 sched.start()
 
 app = Flask(__name__)

@@ -3,6 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 import subprocess
 from datetime import datetime
+import pytz
 
 def update_stock_data():
     #kospi
@@ -51,7 +52,7 @@ def update_stock_data():
             kosdaq_stock_amounts.append(stock_amounts_td.get_text().replace(',', ""))
         print("kosdaq : ", "stock_code_count=", len(kosdaq_stock_codes), " stock_amount_count=", len(kosdaq_stock_amounts))
 
-    date=datetime.today().strftime("%Y-%m-%d")
+    date=datetime.now(tz=pytz.timezone('Asia/Seoul')).strftime("%Y-%m-%d")
     stock_type = "kospi"
     cmd = ["blockchaind", "tx", "blockchain", "create-stock-data", date]
     
@@ -65,8 +66,6 @@ def update_stock_data():
  
     cmd.extend(["-y", "--from", "root", "--gas=auto","--keyring-backend","test", "--chain-id", "stock-chain"])
     subprocess.call(cmd)
-
-
 
 
 if __name__=="__main__":
