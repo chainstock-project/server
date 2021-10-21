@@ -4,7 +4,6 @@
 #cd blockchain
 #bash script/second_node_init.bash
 
-FIRST_NODE="3.17.109.211"
 
 sudo yum -y install jq
 sudo yum -y install git
@@ -15,18 +14,17 @@ rm -rf go1.17.linux-amd64.tar.gz
 GOPATH=$HOME/go
 PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
 mkdir $GOPATH $GOPATH/bin $GOPATH/src $GOPATH/pkg
-
+echo "export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin" >> ~/.bashrc
 # blockchain app install
 git clone https://github.com/chainstock-project/blockchain
 cd blockchain
 make
 
+FIRST_NODE="3.12.83.66"
 blockchaind init ec2-node
 wget -qO- $FIRST_NODE:26657/genesis | jq -r .result.genesis > ~/.blockchain/config/genesis.json
 NODE_ID=$(wget -qO- $FIRST_NODE:26657/status | jq -r .result.node_info.id)
 sed "s#persistent_peers = \"\"#persistent_peers = \"$NODE_ID@$FIRST_NODE:26656\"#" -i ~/.blockchain/config/config.toml
-sed -i 's/enable = false/enable = true/' $HOME/.blockchain/config/app.toml
-sed -i 's,laddr = "tcp://127.0.0.1:26657",laddr = "tcp://0.0.0.0:26657",g' $HOME/.blockchain/config/config.toml
 blockchaind start
 
 # last height

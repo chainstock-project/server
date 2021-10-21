@@ -52,21 +52,22 @@ def update_stock_data():
             kosdaq_stock_amounts.append(stock_amounts_td.get_text().replace(',', ""))
         print("kosdaq : ", "stock_code_count=", len(kosdaq_stock_codes), " stock_amount_count=", len(kosdaq_stock_amounts))
 
-    date=datetime.now(tz=pytz.timezone('Asia/Seoul')).strftime("%Y-%m-%d")
-    stock_type = "kospi"
-    cmd = ["blockchaind", "tx", "blockchain", "create-stock-data", date]
-    
+    stock_date=datetime.now(tz=pytz.timezone('Asia/Seoul')).strftime("%Y-%m-%d")
+
+    cmd = ["blockchaind", "tx", "blockchain", "create-stock-data"]
+
     # kospi blockchain에 업데이트
+    market_type = "kospi"
     for  i in range(len(kospi_stock_codes)):
-        cmd.extend([stock_type, kospi_stock_codes[i], kospi_stock_amounts[i]])
+        cmd.extend([kospi_stock_codes[i], market_type, kospi_stock_amounts[i], stock_date])
+
     # kosdaq blockchain에 업데이트
-    stock_type = "kosdaq"
+    market_type = "kosdaq"
     for  i in range(len(kosdaq_stock_codes)):
-        cmd.extend([stock_type, kospi_stock_codes[i], kospi_stock_amounts[i]])
- 
+        cmd.extend([kosdaq_stock_codes[i], market_type, kosdaq_stock_amounts[i], stock_date])
+
     cmd.extend(["-y", "--from", "root", "--gas=auto","--keyring-backend","test", "--chain-id", "stock-chain"])
     subprocess.call(cmd)
-
 
 if __name__=="__main__":
     update_stock_data()
