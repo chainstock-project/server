@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import subprocess
 from datetime import datetime
 import pytz
+from apscheduler.schedulers.background import BlockingScheduler
 
 def update_stock_data():
     #kospi
@@ -80,4 +81,8 @@ def update_stock_data():
     subprocess.call(cmd)
 
 if __name__=="__main__":
-    update_stock_data()
+    #schduler 실행
+    print("start scheduler")
+    sched = BlockingScheduler(daemon=True, timezone="Asia/Seoul")
+    sched.add_job(update_stock_data,'cron', hour=18)
+    sched.start()

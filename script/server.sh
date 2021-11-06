@@ -10,13 +10,20 @@ blockchaind gentx root 10000000000stake --chain-id stock-chain --keyring-backend
 blockchaind collect-gentxs
 sed -i 's/enable = false/enable = true/' $HOME/.blockchain/config/app.toml
 sed -i 's,laddr = "tcp://127.0.0.1:26657",laddr = "tcp://0.0.0.0:26657",g' $HOME/.blockchain/config/config.toml
+
 # blockchain app start
 nohup blockchaind start > blockchain.log 2>&1&
+
+
 
 # flask build
 git clone https://github.com/chainstock-project/server.git
 python3 -m venv server/venv
 source server/venv/bin/activate
 pip install -r server/requirements.txt
+
+# update_stock_data_scheduler start
+nohup python3 server/flask/update_stock_data > update_stock_data.log 2>&1&
+
 # flask start
 gunicorn app:app -b 0.0.0.0:5000 -w 10 --chdir server/flask/

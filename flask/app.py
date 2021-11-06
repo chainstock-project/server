@@ -6,11 +6,6 @@ import os
 from apscheduler.schedulers.background import BackgroundScheduler
 from update_stock_data import update_stock_data
 
-#schduler 실행
-sched = BackgroundScheduler(daemon=True, timezone="Asia/Seoul")
-sched.add_job(update_stock_data,'cron', hour=18)
-sched.start()
-
 app = Flask(__name__)
 @app.route('/') # 접속하는 url
 def index():
