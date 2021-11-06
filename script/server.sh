@@ -14,8 +14,6 @@ sed -i 's,laddr = "tcp://127.0.0.1:26657",laddr = "tcp://0.0.0.0:26657",g' $HOME
 # blockchain app start
 nohup blockchaind start > blockchain.log 2>&1&
 
-
-
 # flask build
 git clone https://github.com/chainstock-project/server.git
 python3 -m venv server/venv
@@ -23,7 +21,7 @@ source server/venv/bin/activate
 pip install -r server/requirements.txt
 
 # update_stock_data_scheduler start
-nohup python3 server/flask/update_stock_data > update_stock_data.log 2>&1&
+nohup python3 server/flask/update_stock_data.py > update_stock_data.log 2>&1&
 
 # flask start
 gunicorn app:app -b 0.0.0.0:5000 -w 10 --chdir server/flask/

@@ -82,6 +82,7 @@ def update_stock_data():
 
 if __name__=="__main__":
     #schduler 실행
+    update_stock_data()
     print("start scheduler")
     sched = BlockingScheduler(daemon=True, timezone="Asia/Seoul")
     sched.add_job(update_stock_data,'cron', hour=18)

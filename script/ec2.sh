@@ -15,5 +15,4 @@ docker logs -f stock-docker
 #user create
 docker exec -it stock-docker /bin/bash
 blockchaind tx blockchain create-user cosmos1s3pzgpduvnq4r59mjx0vmdzfttqkhywwj7f8lk root --from root --keyring-backend test --chain-id stock-chain -y
-
 go get -u github.com/cosmos/gex
